@@ -4,6 +4,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Fer.MonitorConfig.MainWindow"
-        Title="Fer.MonitorConfig">
-    Welcome to Avalonia!
+        Title="Fer.MonitorConfig" Width="400" Height="200" Background="Gainsboro"
+        Icon="/Media/LOGO.png">
+        <!--editado como Page en https://xaml.io/-->
+
+     <StackPanel Name="stkMonitores" Margin="16">
+        <TextBlock Name="uno">First screen</TextBlock>
+        <Slider Name="v1" Maximum="100" Value="80" />
+        <TextBlock Name="dos">Second screen</TextBlock>
+        <Slider Name="v2" Maximum="100" Value="60"  />
+      </StackPanel>
 </Window>
