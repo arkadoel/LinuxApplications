@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fer.MonitorConfig", "Fer.MonitorConfig.csproj", "{6569C8C2-659F-4C8C-9BFC-4CB00898ED7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6569C8C2-659F-4C8C-9BFC-4CB00898ED7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6569C8C2-659F-4C8C-9BFC-4CB00898ED7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6569C8C2-659F-4C8C-9BFC-4CB00898ED7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6569C8C2-659F-4C8C-9BFC-4CB00898ED7B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
