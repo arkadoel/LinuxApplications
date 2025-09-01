@@ -7,7 +7,7 @@ namespace Fer.MonitorConfig;
 
 class Program
 {
-    internal const string APP_VERSION = "1.0.1";
+    internal static string APP_VERSION = "1.0.1";
     internal const string APP_NAME = "Monitor Config";
     internal const string ICONO = "./media/LOGO.png";
 
@@ -15,7 +15,7 @@ class Program
 
     [STAThread]
     public static void Main(string[] args)
-    {
+    {        
         ServiceProvider = new ServiceCollection()
             .AddSingleton<ILogic>(new Logic())
             .BuildServiceProvider();

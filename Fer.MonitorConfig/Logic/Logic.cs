@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Fer.MonitorConfig;
 
@@ -10,6 +11,7 @@ public interface ILogic
     List<string> DetectScreens();
     Dictionary<string, string> GetCurrentBrightness();
     string RunCommand(string command, string arguments);
+    string GetAppVersion();
 }
 
 internal class Logic : ILogic
@@ -40,6 +42,21 @@ internal class Logic : ILogic
 
         return displayNames;
 
+    }
+
+    public string GetAppVersion()
+    {
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        Version? version = assembly.GetName().Version;
+        if (version != null)
+        {
+            // Combine the three main version parts into a new string.
+            string shortVersion = $"{version.Major}.{version.Minor}.{version.Build}";
+
+            Console.WriteLine($"App version: {shortVersion}");
+            return $"{shortVersion}";
+        }
+        return string.Empty;
     }
 
     public Dictionary<string, string> GetCurrentBrightness()

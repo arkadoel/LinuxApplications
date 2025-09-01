@@ -12,11 +12,13 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        Logic = Program.ServiceProvider!.GetRequiredService<ILogic>();
+        
         InitializeComponent();
+        Program.APP_VERSION = Logic.GetAppVersion();
         this.Title = $"{Program.APP_NAME} {Program.APP_VERSION}";
         this.stkMonitores.IsVisible = false;
 
-        Logic = Program.ServiceProvider!.GetRequiredService<ILogic>();
         var brillos = Logic.GetCurrentBrightness();
 
         this.stkMonitores.Children.Clear();
