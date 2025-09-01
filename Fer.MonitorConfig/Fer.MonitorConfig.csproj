@@ -6,6 +6,12 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <AssemblyVersion>1.0.1</AssemblyVersion>
+        <FileVersion>1.0.1</FileVersion>
+        <Copyright>Copyright ©2025</Copyright>
+        <License>MIT</License>
+        <Description>Control para brillo multiples monitores</Description>  
+        <PackageProjectUrl>https://github.com/arkadoel/LinuxApplications</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
