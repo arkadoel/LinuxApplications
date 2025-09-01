@@ -101,7 +101,7 @@ internal class Logic : ILogic
         {
             // Log the exception or handle it as needed
             Console.WriteLine($"Error executing command: {ex.Message}");
-            return null;
+            return string.Empty;
         }
     }
 }
