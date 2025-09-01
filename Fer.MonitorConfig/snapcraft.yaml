@@ -1,6 +1,6 @@
 name: fer-monitorconfig
 base: core22
-version: '1.0.1'
+version: '1.0.7'
 summary: Control para brillo multiples monitores.
 description: |
   Control para brillo multiples monitores.
@@ -24,3 +24,6 @@ parts:
     source: ./bin/Release/net8.0/linux-x64/publish
     build-packages:
       - libgdk-pixbuf2.0-dev
+    organize:
+      bin/Release/net8.0/linux-x64/publish: bin
+      meta/gui/Fer.MonitorConfig.desktop: desktop/Fer.MonitorConfig.desktop

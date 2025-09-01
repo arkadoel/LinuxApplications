@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Monitor Config
+Comment=Control para brillo multiples monitores.
+Exec=/snap/fer-monitorconfig/current/Fer.MonitorConfig
+Icon=/snap/fer-monitorconfig/current/meta/gui/Fer.MonitorConfig.png
+Type=Application
+Categories=Utility;
