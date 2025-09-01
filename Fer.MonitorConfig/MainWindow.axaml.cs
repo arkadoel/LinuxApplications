@@ -31,12 +31,18 @@ public partial class MainWindow : Window
             };
             stkMonitores.Children.Add(label);
 
-            var brilloActual = Convert.ToInt32(Convert.ToDouble(monitor.Value));
+            double brilloDetectado = Convert.ToDouble(monitor.Value);
+            System.Console.WriteLine("Brillo detectado " + brilloDetectado.ToString("F2"));
+            if (brilloDetectado >= 100d)
+            {
+                brilloDetectado = 99d;
+            }
+            var brilloActual = Convert.ToInt32(brilloDetectado);
             System.Console.WriteLine("Brillo actual " + brilloActual.ToString());
 
             var slider = new Slider()
             {
-                Maximum = 100,
+                Maximum = 101,
                 Minimum = 1,
                 Value = brilloActual,
                 Name = monitor.Key
@@ -53,6 +59,11 @@ public partial class MainWindow : Window
         var slider = sender as Slider;
         string monitor = slider!.Name!;
         double brillo = slider!.Value / 100;
+        System.Console.WriteLine("Set brightness to" + brillo.ToString("F2", CultureInfo.InvariantCulture));
+        if (brillo >= 0.99)
+        {
+            brillo = 0.99;
+        }
         //xrandr --output eDP-1 --brightness 0.99
 
         string args = $"--output {monitor} --brightness {brillo.ToString("F2", CultureInfo.InvariantCulture)}";
