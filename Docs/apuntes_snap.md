@@ -19,7 +19,7 @@ El proceso de publicación es idéntico al que usarías para Flatpak. Debes gene
 En la terminal, dentro del directorio de tu proyecto C\#, ejecuta:
 
 ```bash
-dotnet publish -c Release -r linux-x64 --self-contained true -o ./publish
+dotnet publish -c Release -r linux-x64 --self-contained true
 ```
 
 Esto creará la carpeta `./publish` con todos los archivos binarios y librerías necesarios.
@@ -31,19 +31,19 @@ Esto creará la carpeta `./publish` con todos los archivos binarios y librerías
 El manifiesto de Snap es un archivo YAML llamado `snapcraft.yaml` que define cómo se empaquetará tu aplicación. Crea un archivo con ese nombre en la raíz de tu proyecto y edítalo con el siguiente contenido, adaptándolo a tu aplicación:
 
 ```yaml
-name: mi-aplicacion
+name: fer-monitorconfig
 base: core22
-version: '1.0'
-summary: Una breve descripción de mi aplicación.
+version: '1.0.1'
+summary: Control para brillo multiples monitores.
 description: |
-  Una descripción más detallada de mi aplicación.
+  Control para brillo multiples monitores.
 
 grade: stable
 confinement: strict
 
 apps:
-  mi-app:
-    command: mi-aplicacion
+  fer-monitorconfig:
+    command: Fer.MonitorConfig
     extensions:
       - gnome
     plugs:
@@ -52,9 +52,11 @@ apps:
       - x11
 
 parts:
-  mi-app:
+  fer-monitorconfig:
     plugin: dump
-    source: ./publish
+    source: ./bin/Release/net8.0/linux-x64/publish
+    build-packages:
+      - libgdk-pixbuf2.0-dev
 ```
 
 **Explicación del manifiesto:**
@@ -79,7 +81,7 @@ parts:
 Con tu archivo `snapcraft.yaml` en la raíz de tu proyecto, abre una terminal y simplemente ejecuta el siguiente comando:
 
 ```bash
-snapcraft
+snapcraft pack
 ```
 
 Snapcraft leerá el manifiesto, creará un entorno de construcción aislado, copiará los archivos de tu carpeta `publish` y generará un archivo con la extensión `.snap` en el mismo directorio. Este archivo es el paquete redistribuible que los usuarios pueden instalar.
@@ -87,7 +89,12 @@ Snapcraft leerá el manifiesto, creará un entorno de construcción aislado, cop
 Para instalarlo localmente, usa:
 
 ```bash
-sudo snap install mi-aplicacion_1.0_amd64.snap --dangerous
+sudo snap install fer-monitorconfig_1.0.1_amd64.snap --dangerous
 ```
 
 **Nota:** El flag `--dangerous` es necesario para instalar snaps que no provienen de la Snap Store oficial.
+
+Para ejecutarlo hacer
+```bash
+/snap/fer-monitorconfig/current/Fer.MonitorConfig
+```
