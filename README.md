@@ -8,3 +8,8 @@ My personal linux applications
     sudo snap install fer-monitorconfig_1.0.7_amd64.snap --dangerous
     ```
 - [Selene Media Converter de teejee2008](https://github.com/teejee2008/selene.git) se crea una versión propia en [Fer.SeleneBatch](https://github.com/arkadoel/LinuxApplications/tree/main/Fer.SeleneBatch)    
+
+- [Scripts/textoPDFaTexto.py](https://github.com/arkadoel/LinuxApplications/blob/main/Scripts/textoPDFaTexto.py) permite extraer a texto el contenido de una carpeta de pdfs. Muy util para extraer una transcripcion y luego usarlo con un reproductor de voz para hacer audios de lecciones.
+  ```bash
+  python3 ./textoPDFatexto.py ./GESTIÓN\ DE\ PROCESOS\ DE\ NEGOCIO/ ./02GestionDeProcesosDeNegocio.md
+  ```
