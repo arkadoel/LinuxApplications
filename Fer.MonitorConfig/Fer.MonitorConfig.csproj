@@ -8,8 +8,7 @@
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <AssemblyVersion>1.0.8</AssemblyVersion>
         <FileVersion>1.0.8</FileVersion>
-        <Version>1.0.8</Version>
-        <!--recuerda modificar snapcraft.yaml-->
+        <Version>1.0.8</Version><!--recuerda modificar snapcraft.yaml-->
         <Copyright>Copyright ©2025</Copyright>
         <License>MIT</License>
         <Description>Control para brillo multiples monitores</Description>  
