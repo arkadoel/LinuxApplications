@@ -35,11 +35,14 @@ public partial class MainWindow : Window
 
             double brilloDetectado = Convert.ToDouble(monitor.Value);
             System.Console.WriteLine("Brillo detectado " + brilloDetectado.ToString("F2"));
-            if (brilloDetectado >= 100d)
+            /*if (brilloDetectado >= 100d)
             {
                 brilloDetectado = 99d;
-            }
+            }*/
             var brilloActual = Convert.ToInt32(brilloDetectado);
+            brilloActual = Convert.ToInt32(99d); //fix: iniciar con este brillo siempre
+            System.Console.WriteLine("SET Brillo inicial a: " + brilloActual.ToString("F2"));
+            SetBrightness(monitor.Key, brilloActual);
             System.Console.WriteLine("Brillo actual " + brilloActual.ToString());
 
             var slider = new Slider()
@@ -61,6 +64,12 @@ public partial class MainWindow : Window
         var slider = sender as Slider;
         string monitor = slider!.Name!;
         double brillo = slider!.Value / 100;
+
+        SetBrightness(monitor, brillo);
+    }
+
+    private void SetBrightness(string monitor, double brillo)
+    {
         System.Console.WriteLine("Set brightness to" + brillo.ToString("F2", CultureInfo.InvariantCulture));
         if (brillo >= 0.99)
         {
