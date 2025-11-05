@@ -94,7 +94,7 @@ internal class Logic : ILogic
         }
 
         return myMonitors;
-        
+
 
     }
 
