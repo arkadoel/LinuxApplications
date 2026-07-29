@@ -7,7 +7,7 @@ namespace Fer.SeleneBatch;
 
 class Program
 {
-    internal const string APP_VERSION = "0.1.0";
+    internal const string APP_VERSION = "0.0.1";
     internal const string APP_NAME = "Selene Batch";
     internal static ServiceProvider? ServiceProvider;
 

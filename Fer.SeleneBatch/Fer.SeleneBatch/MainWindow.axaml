@@ -2,14 +2,86 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        d:DesignWidth="500" d:DesignHeight="250"
-        Width="500" Height="250" 
+        xmlns:local="clr-namespace:Fer.SeleneBatch"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Fer.SeleneBatch.MainWindow"
-        Title="Fer.SeleneBatch" Background="Gainsboro">
-    <StackPanel Margin="10,10,-10,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-        <StackPanel Orientation="Horizontal" Spacing="4" >
-            <Button>Añadir</Button>
-            <Button>Quitar</Button>
+        x:DataType="local:MainViewModel"
+        Background="Gainsboro"
+        Title="Fer.SeleneBatch - Ejecutor por lotes"
+        Width="800" Height="500">
+
+    <Grid RowDefinitions="Auto, *, Auto" Margin="12">
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,10">
+            <Button Content="Añadir" 
+                Command="{Binding AddFilesCommand}" 
+                Padding="15,6"/>
+            <Button Content="Quitar" 
+                Command="{Binding RemoveFileCommand}" 
+                CommandParameter="{Binding SelectedFile}" 
+                Padding="15,6"/>
+            <Separator Width="2" Margin="5,0"/>
+            <Button Content="Iniciar" Command="{Binding StartProcessCommand}" 
+                    Classes="accent" Padding="20,6"/>
+            <Button Content="Finalizar" 
+            Command="{Binding CancelProcessCommand}" 
+            Padding="15,6"/>
         </StackPanel>
-    </StackPanel>
+
+        <Border Grid.Row="1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" 
+                BorderThickness="1" CornerRadius="4">
+            <DataGrid ItemsSource="{Binding Files}" 
+                      Background="White"
+                      SelectedItem="{Binding SelectedFile}"
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True"
+                      GridLinesVisibility="All">
+                <DataGrid.Columns>
+                    
+                    <DataGridTextColumn Header="Nombre del archivo" 
+                                        Binding="{Binding FileName}" 
+                                        Width="*"/>
+                    <DataGridTextColumn Header="Tamaño" 
+                                        Binding="{Binding FileSizeText}" 
+                                        Width="100"/>
+                    <DataGridTextColumn Header="Duración" 
+                                        Binding="{Binding DurationText}" 
+                                        Width="120"/>
+                    
+                    <DataGridTemplateColumn Header="Proceso" Width="200">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate DataType="local:BatchItem">
+                                <Grid Margin="5,0">
+                                    <ProgressBar Value="{Binding Progress}" 
+                                                 Minimum="0" Maximum="100" 
+                                                 Height="16"/>
+                                    <TextBlock Text="{Binding Progress, StringFormat={}{0}%}" 
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center" 
+                                               FontSize="11"
+                                               Foreground="White"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0,10,0,0">
+            <TextBlock Grid.Column="0" Text="Script de procesamiento:" 
+                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+            
+            <ComboBox Grid.Column="1" 
+                      ItemsSource="{Binding AvailableScripts}" 
+                      SelectedItem="{Binding SelectedScript}"
+                      HorizontalAlignment="Stretch"/>
+            
+            <Button Grid.Column="2" Content="Examinar..." 
+                    Command="{Binding BrowseScriptCommand}" 
+                    Margin="8,0,0,0"/>
+        </Grid>
+        
+    </Grid>
 </Window>
