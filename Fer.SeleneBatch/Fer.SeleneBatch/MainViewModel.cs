@@ -15,7 +15,7 @@ namespace Fer.SeleneBatch;
 
 public class MainViewModel : INotifyPropertyChanged
 {
-    private BatchItem? _selectedFile;    
+    private BatchItem? _selectedFile;
     private string? _selectedScript;
     private bool _isProcessing;
 
@@ -33,7 +33,7 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand MoveUpCommand { get; }
     public ICommand MoveDownCommand { get; }
     public ICommand StartProcessCommand { get; }
-    public ICommand CancelProcessCommand { get; } // Nuevo comando
+    public ICommand CancelProcessCommand { get; }
     public ICommand BrowseScriptCommand { get; }
 
     public BatchItem? SelectedFile
@@ -85,7 +85,7 @@ public class MainViewModel : INotifyPropertyChanged
         RemoveFileCommand = new RelayCommand(OnRemoveFile, CanRemoveFile);
         MoveUpCommand = new RelayCommand(OnMoveUp);
         MoveDownCommand = new RelayCommand(OnMoveDown);
-        
+
         StartProcessCommand = new RelayCommand(async () => await OnStartProcessAsync(), CanStartProcess);
         CancelProcessCommand = new RelayCommand(OnCancelProcess, CanCancelProcess); // Registrar Cancelar
         BrowseScriptCommand = new RelayCommand(OnBrowseScript);
@@ -102,7 +102,7 @@ public class MainViewModel : INotifyPropertyChanged
     // ==========================================
 
     private bool CanStartProcess() => !IsProcessing && !string.IsNullOrEmpty(SelectedScript) && Files.Count > 0;
-    
+
     private bool CanCancelProcess() => IsProcessing;
 
     /// <summary>
@@ -136,19 +136,28 @@ public class MainViewModel : INotifyPropertyChanged
 
         try
         {
-            while (Files.Count > 0 && !_cts.Token.IsCancellationRequested)
+            int count = 0;
+            while (Files.Count > 0 && !_cts.Token.IsCancellationRequested && count < Files.Count)
             {
-                var item = Files[0];
+                var item = Files[count];
                 SelectedFile = item;
 
                 // Ejecutamos pasando el token de cancelación
-                await ExecuteScriptForFileAsync(item.FilePath, SelectedScript, item, _cts.Token);
+                try
+                {
+                    await ExecuteScriptForFileAsync(item.FilePath, SelectedScript, item, _cts.Token);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error al procesar {ex.Message}");
+                }
 
                 // Si no se ha solicitado cancelar y el elemento sigue ahí, lo quitamos de la lista
-                if (!_cts.Token.IsCancellationRequested && Files.Contains(item))
+                /*if (!_cts.Token.IsCancellationRequested && Files.Contains(item))
                 {
                     Dispatcher.UIThread.Post(() => Files.Remove(item));
-                }
+                }*/
+                count += 1;
             }
         }
         catch (OperationCanceledException)
@@ -252,31 +261,31 @@ public class MainViewModel : INotifyPropertyChanged
     // ==========================================
 
     private async Task OnAddFilesAsync()
-{
-    if (OpenVideoPickerFunc == null) return;
-
-    var selectedPaths = await OpenVideoPickerFunc();
-
-    await Dispatcher.UIThread.InvokeAsync(() =>
     {
-        foreach (var path in selectedPaths)
-        {
-            if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
-            {
-                var fileInfo = new FileInfo(path);
+        if (OpenVideoPickerFunc == null) return;
 
-                Files.Add(new BatchItem
+        var selectedPaths = await OpenVideoPickerFunc();
+
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            foreach (var path in selectedPaths)
+            {
+                if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
                 {
-                    FilePath = path,
-                    FileSizeBytes = fileInfo.Length, // Leemos el tamaño real en bytes
-                    Duration = TimeSpan.Zero,
-                    Progress = 0
-                });
+                    var fileInfo = new FileInfo(path);
+
+                    Files.Add(new BatchItem
+                    {
+                        FilePath = path,
+                        FileSizeBytes = fileInfo.Length, // Leemos el tamaño real en bytes
+                        Duration = TimeSpan.Zero,
+                        Progress = 0
+                    });
+                }
             }
-        }
-        (StartProcessCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    });
-}
+            (StartProcessCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        });
+    }
 
     private bool CanRemoveFile() => SelectedFile != null;
 
