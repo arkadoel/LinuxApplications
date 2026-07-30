@@ -1,0 +1,29 @@
+name: fer-selenebatch
+base: core22
+version: '0.0.1'
+summary: Media converter via batch.
+description: |
+  Media converter via batch.
+
+grade: stable
+confinement: strict
+
+apps:
+  fer-selenebatch:
+    command: Fer.selenebatch
+    extensions:
+      - gnome
+    plugs:
+      - home
+      - network
+      - x11
+
+parts:
+  fer-selenebatch:
+    plugin: dump
+    source: ./bin/Release/net8.0/linux-x64/publish
+    build-packages:
+      - libgdk-pixbuf2.0-dev
+    organize:
+      bin/Release/net8.0/linux-x64/publish: bin
+      meta/gui/Fer.selenebatch.desktop: desktop/Fer.selenebatch.desktop

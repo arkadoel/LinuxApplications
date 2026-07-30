@@ -27,5 +27,11 @@ publish:
 	@echo "Publicando la aplicación para producción..."
 	dotnet publish -c Release
 
+snap:
+	clear
+	@echo "Publicando la aplicación para producción..."
+	dotnet publish -c Release -r linux-x64 --self-contained true
+	sudo snapcraft pack
+
 
 

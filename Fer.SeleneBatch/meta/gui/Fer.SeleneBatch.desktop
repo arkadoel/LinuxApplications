@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Selene Batch
+Comment=Media converter via batch.
+Exec=/snap/fer-selenebatch/current/Fer.SeleneBatch
+Icon=/snap/fer-selenebatch/current/meta/gui/Fer.SeleneBatch.png
+Type=Application
+Categories=Utility;
