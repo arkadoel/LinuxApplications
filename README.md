@@ -7,7 +7,11 @@ My personal linux applications
     ```bash
     sudo snap install fer-monitorconfig_1.0.7_amd64.snap --dangerous
     ```
-- [Selene Media Converter de teejee2008](https://github.com/teejee2008/selene.git) se crea una versión propia en [Fer.SeleneBatch](https://github.com/arkadoel/LinuxApplications/tree/main/Fer.SeleneBatch)    
+- [Selene Media Converter de teejee2008](https://github.com/teejee2008/selene.git) se crea una versión propia en [Fer.SeleneBatch](https://github.com/arkadoel/LinuxApplications/tree/main/Fer.SeleneBatch)
+  - Comando de instalación de Fer-Selene-Batch [Ver release](https://github.com/arkadoel/LinuxApplications/releases)
+    ```bash
+    sudo snap install ./fer-selenebatch_0.9.0_amd64.snap --dangerous
+    ```
 
 - [Scripts/textoPDFaTexto.py](https://github.com/arkadoel/LinuxApplications/blob/main/Scripts/textoPDFaTexto.py) permite extraer a texto el contenido de una carpeta de pdfs. Muy util para extraer una transcripcion y luego usarlo con un reproductor de voz para hacer audios de lecciones.
   ```bash
