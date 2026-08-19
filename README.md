@@ -12,6 +12,7 @@ My personal linux applications
     ```bash
     sudo snap install ./fer-selenebatch_0.9.0_amd64.snap --dangerous
     ```
+    ![0.9.0](Docs/Fer.SeleneBatch.png)
 
 - [Scripts/textoPDFaTexto.py](https://github.com/arkadoel/LinuxApplications/blob/main/Scripts/textoPDFaTexto.py) permite extraer a texto el contenido de una carpeta de pdfs. Muy util para extraer una transcripcion y luego usarlo con un reproductor de voz para hacer audios de lecciones.
   ```bash
