@@ -17,6 +17,7 @@ clean:
 
 run:
 	@echo "Ejecutando el proyecto..."
+	dotnet build 
 	dotnet run --project $(PROJECT_OR_SLN) -v m
 
 test:
@@ -29,9 +30,10 @@ publish:
 
 snap:
 	clear
+	@echo "Limpiando binarios anteriores..."
+	dotnet clean
 	@echo "Publicando la aplicación para producción..."
 	dotnet publish -c Release -r linux-x64 --self-contained true
 	sudo snapcraft pack
-
 
 

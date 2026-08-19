@@ -11,77 +11,70 @@
         Width="800" Height="500">
 
     <Grid RowDefinitions="Auto, *, Auto" Margin="12">
-        
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,10">
-            <Button Content="Añadir" 
-                Command="{Binding AddFilesCommand}" 
-                Padding="15,6"/>
-            <Button Content="Quitar" 
-                Command="{Binding RemoveFileCommand}" 
-                CommandParameter="{Binding SelectedFile}" 
-                Padding="15,6"/>
-            <Separator Width="2" Margin="5,0"/>
-            <Button Content="Iniciar" Command="{Binding StartProcessCommand}" 
-                    Classes="accent" Padding="20,6"/>
-            <Button Content="Finalizar" 
-            Command="{Binding CancelProcessCommand}" 
-            Padding="15,6"/>
-        </StackPanel>
 
-        <Border Grid.Row="1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" 
+        <!-- Barra de herramientas superior -->
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,10">
+            <!-- Botones a la izquierda -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                <Button Content="Añadir" Command="{Binding AddFilesCommand}" Padding="15,6"/>
+                <Button Content="Quitar" Command="{Binding RemoveFileCommand}" CommandParameter="{Binding SelectedFile}" Padding="15,6"/>
+                <Separator Width="2" Margin="5,0"/>
+                <Button Content="Iniciar" Command="{Binding StartProcessCommand}" Classes="accent" Padding="20,6"/>
+                <Button Content="Finalizar" Command="{Binding CancelProcessCommand}" Padding="15,6"/>
+            </StackPanel>
+
+            <!-- Botón Pegar alineado totalmente a la derecha -->
+            <Button Grid.Column="1" Content="📋 Pegar" Click="OnPasteButtonClick" Padding="15,6" ToolTip.Tip="Pegar archivos o carpetas del portapapeles (Ctrl+V)"/>
+        </Grid>
+        
+        <!-- Tabla de archivos -->
+        <Border Grid.Row="1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
                 BorderThickness="1" CornerRadius="4">
-            <DataGrid ItemsSource="{Binding Files}" 
+            <DataGrid ItemsSource="{Binding Files}"
                       Background="White"
                       SelectedItem="{Binding SelectedFile}"
-                      AutoGenerateColumns="False" 
+                      AutoGenerateColumns="False"
                       IsReadOnly="True"
+                      FontSize="10"
+                      RowHeight="22"
                       GridLinesVisibility="All">
+
+                <DataGrid.Styles>
+                    <Style Selector="DataGridRow:selected /template/ Rectangle#BackgroundRectangle">
+                        <Setter Property="Fill" Value="#FFCED3D8" />
+                    </Style>
+                    <Style Selector="DataGridRow:selected:not(:focus) /template/ Rectangle#BackgroundRectangle">
+                        <Setter Property="Fill" Value="#FFCED3D8" />
+                    </Style>
+                </DataGrid.Styles>
+
                 <DataGrid.Columns>
-                    
-                    <DataGridTextColumn Header="Nombre del archivo" 
-                                        Binding="{Binding FileName}" 
-                                        Width="*"/>
-                    <DataGridTextColumn Header="Tamaño" 
-                                        Binding="{Binding FileSizeText}" 
-                                        Width="100"/>
-                    <DataGridTextColumn Header="Duración" 
-                                        Binding="{Binding DurationText}" 
-                                        Width="120"/>
-                    
+                    <DataGridTextColumn Header="Nombre del archivo" Binding="{Binding FileName}" FontSize="10" Width="*"/>
+                    <DataGridTextColumn Header="Tamaño" Binding="{Binding FileSizeText}" FontSize="10" Width="100"/>
+                    <DataGridTextColumn Header="Duración" Binding="{Binding DurationText}" FontSize="10" Width="120"/>
+
                     <DataGridTemplateColumn Header="Proceso" Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate DataType="local:BatchItem">
                                 <Grid Margin="5,0">
-                                    <ProgressBar Value="{Binding Progress}" 
-                                                 Minimum="0" Maximum="100" 
-                                                 Height="16"/>
-                                    <TextBlock Text="{Binding Progress, StringFormat={}{0}%}" 
-                                               HorizontalAlignment="Center" 
-                                               VerticalAlignment="Center" 
-                                               FontSize="11"
-                                               Foreground="White"/>
+                                    <ProgressBar Value="{Binding Progress}" Minimum="0" Maximum="100" Height="16"/>
+                                    <TextBlock Text="{Binding Progress, StringFormat={}{0}%}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               FontSize="10" Foreground="White"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
 
+        <!-- Selector de Script -->
         <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0,10,0,0">
-            <TextBlock Grid.Column="0" Text="Script de procesamiento:" 
-                       VerticalAlignment="Center" Margin="0,0,10,0"/>
-            
-            <ComboBox Grid.Column="1" 
-                      ItemsSource="{Binding AvailableScripts}" 
-                      SelectedItem="{Binding SelectedScript}"
-                      HorizontalAlignment="Stretch"/>
-            
-            <Button Grid.Column="2" Content="Examinar..." 
-                    Command="{Binding BrowseScriptCommand}" 
-                    Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="0" Text="Script de procesamiento:" FontSize="10" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <ComboBox Grid.Column="1" FontSize="10" ItemsSource="{Binding AvailableScripts}" SelectedItem="{Binding SelectedScript}" HorizontalAlignment="Stretch"/>
+            <Button Grid.Column="2" Content="Examinar..." Command="{Binding BrowseScriptCommand}" Margin="8,0,0,0"/>
         </Grid>
-        
+
     </Grid>
 </Window>

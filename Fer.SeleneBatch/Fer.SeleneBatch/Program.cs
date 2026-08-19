@@ -7,7 +7,7 @@ namespace Fer.SeleneBatch;
 
 class Program
 {
-    internal const string APP_VERSION = "0.0.1";
+    internal const string APP_VERSION = "0.9.0";
     internal const string APP_NAME = "Selene Batch";
     internal static ServiceProvider? ServiceProvider;
 
@@ -27,5 +27,10 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
+            .With(new X11PlatformOptions
+            {
+                EnableMultiTouch = true,
+                UseDBusMenu = true
+            })
             .LogToTrace();
 }

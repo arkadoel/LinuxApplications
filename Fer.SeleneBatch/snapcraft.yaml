@@ -1,6 +1,6 @@
 name: fer-selenebatch
-base: core22
-version: '0.0.1'
+base: core24                                   # 1. Actualizado a core24 para soporte nativo de .NET 8 / Ubuntu 24.04
+version: '0.9.0'
 summary: Media converter via batch.
 description: |
   Media converter via batch.
@@ -10,7 +10,7 @@ confinement: strict
 
 apps:
   fer-selenebatch:
-    command: Fer.selenebatch
+    command: Fer.SeleneBatch                  # 2. Mayúsculas corregidas para coincidir exactamente con el ejecutable C#
     extensions:
       - gnome
     plugs:
@@ -21,9 +21,7 @@ apps:
 parts:
   fer-selenebatch:
     plugin: dump
-    source: ./bin/Release/net8.0/linux-x64/publish
+    source: Fer.SeleneBatch/bin/Release/net8.0/linux-x64/publish # 3. Ruta corregida según la estructura de la solución
+    source-type: local                         # 4. Forzado tipo 'local' para evitar fallos de resolución en LXD
     build-packages:
-      - libgdk-pixbuf2.0-dev
-    organize:
-      bin/Release/net8.0/linux-x64/publish: bin
-      meta/gui/Fer.selenebatch.desktop: desktop/Fer.selenebatch.desktop
+      - libgdk-pixbuf-2.0-dev

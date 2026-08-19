@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Threading;
+using System.Linq;
 
 namespace Fer.SeleneBatch;
 
@@ -90,10 +91,96 @@ public class MainViewModel : INotifyPropertyChanged
         CancelProcessCommand = new RelayCommand(OnCancelProcess, CanCancelProcess); // Registrar Cancelar
         BrowseScriptCommand = new RelayCommand(OnBrowseScript);
 
+        CargarScriptsDesdeUsuario();
         AvailableScripts.Add("/home/fer/Documentos/PROYECTOS/LinuxApplications/Fer.SeleneBatch/Fer.SeleneBatch/Scripts/fer2mpgElements.sh");
+
         if (AvailableScripts.Count > 0)
         {
             SelectedScript = AvailableScripts[0];
+        }
+    }
+
+    private readonly HashSet<string> _videoExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".mp4", ".mpg", ".mpeg", ".mkv", ".avi", ".mov", ".wmv", ".webm", ".flv"
+    };
+
+    public void CargarScriptsDesdeUsuario()
+    {
+        // Obtiene automáticamente la ruta /home/usuario
+        string userHome = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        // Construye la ruta: /home/usuario/Documentos/Fer.SeleneBatch/Scripts
+        string scriptsPath = Path.Combine(userHome, "Documentos", "Fer.SeleneBatch", "Scripts");
+
+        // Verifica que el directorio exista
+        if (Directory.Exists(scriptsPath))
+        {
+            // Obtiene todos los archivos .sh de la carpeta
+            string[] scriptFiles = Directory.GetFiles(scriptsPath, "*.sh");
+
+            foreach (string script in scriptFiles)
+            {
+                AvailableScripts.Add(script);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Recibe una lista de rutas (archivos o carpetas) y las procesa para agregarlas a la lista.
+    /// </summary>
+    public async Task ProcessInputPathsAsync(IEnumerable<string> paths)
+    {
+        await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            foreach (var path in paths)
+            {
+                if (string.IsNullOrWhiteSpace(path)) continue;
+
+                if (File.Exists(path))
+                {
+                    // Es un archivo individual
+                    AgregarArchivoSiEsVideo(path);
+                }
+                else if (Directory.Exists(path))
+                {
+                    // Es una carpeta: buscar todos los archivos recursivamente
+                    try
+                    {
+                        var filesInDir = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories);
+                        foreach (var file in filesInDir)
+                        {
+                            AgregarArchivoSiEsVideo(file);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Error al leer carpeta {path}: {ex.Message}");
+                    }
+                }
+            }
+
+            (StartProcessCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        });
+    }
+
+    private void AgregarArchivoSiEsVideo(string filePath)
+    {
+        string ext = Path.GetExtension(filePath);
+        if (_videoExtensions.Contains(ext))
+        {
+            // Evitar duplicados basados en la ruta del archivo
+            if (Files.Any(f => f.FilePath.Equals(filePath, StringComparison.OrdinalIgnoreCase)))
+                return;
+
+            var fileInfo = new FileInfo(filePath);
+            Files.Add(new BatchItem
+            {
+                FilePath = filePath,
+                FileSizeBytes = fileInfo.Length,
+                Duration = TimeSpan.Zero,
+                Progress = 0
+            });
         }
     }
 
@@ -264,6 +351,12 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (OpenVideoPickerFunc == null) return;
 
+    var selectedPaths = await OpenVideoPickerFunc();
+    await ProcessInputPathsAsync(selectedPaths);
+
+
+        /*if (OpenVideoPickerFunc == null) return;
+
         var selectedPaths = await OpenVideoPickerFunc();
 
         await Dispatcher.UIThread.InvokeAsync(() =>
@@ -284,7 +377,7 @@ public class MainViewModel : INotifyPropertyChanged
                 }
             }
             (StartProcessCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        });
+        });*/
     }
 
     private bool CanRemoveFile() => SelectedFile != null;
